@@ -3,8 +3,8 @@
 backend:
   name: github
   repo: kelvinl961/mochrondesign
-  # After deploying Sveltia CMS Authenticator, uncomment and set your Worker URL:
-  # base_url: https://YOUR-AUTHENTICATOR.workers.dev
+  branch: main
+  base_url: https://mochrondesign-cms-auth.itsmochron.workers.dev
 
 media_folder: public/images/projects
 public_folder: /images/projects
