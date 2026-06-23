@@ -1,0 +1,39 @@
+---
+import { galleryCategories } from '../data/site';
+
+interface Props {
+  activeCategory?: string;
+}
+
+const { activeCategory = 'landed house' } = Astro.props;
+---
+
+<div class="mb-16 flex flex-wrap items-center gap-4 md:gap-6">
+  <div class="flex items-center gap-4">
+    <span class="inline-block h-3 w-3 bg-pins-accent"></span>
+    <div class="flex items-center gap-4">
+      <h1 class="text-sm font-medium tracking-[0.35em] uppercase md:text-base">
+        Interior<br />Design
+      </h1>
+      <span class="hidden h-10 w-px bg-black/20 sm:block"></span>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap gap-2 md:gap-3">
+    {
+      galleryCategories.map((category) => (
+        <a
+          href={category.href}
+          class:list={[
+            'px-4 py-2 text-[10px] tracking-[0.2em] uppercase transition',
+            activeCategory === category.label
+              ? 'bg-[#d9d9d9] text-black'
+              : 'bg-pins-grey text-white hover:bg-black',
+          ]}
+        >
+          {category.label}
+        </a>
+      ))
+    }
+  </div>
+</div>

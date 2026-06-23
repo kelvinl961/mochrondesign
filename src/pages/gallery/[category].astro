@@ -1,0 +1,34 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import GalleryCategoryNav from '../../components/GalleryCategoryNav.astro';
+
+const pages: Record<string, { title: string; category: string }> = {
+  condominium: { title: 'CONDOMINIUM PROJECT', category: 'condominium' },
+  architecture: { title: 'ARCHITECTURE PROJECT', category: 'architecture' },
+  'commercial-retail': { title: 'COMMERCIAL RETAIL PROJECT', category: 'commercial retail' },
+  video: { title: 'VIDEO GALLERY', category: 'video gallery' },
+};
+
+export function getStaticPaths() {
+  return [
+    { params: { category: 'condominium' } },
+    { params: { category: 'architecture' } },
+    { params: { category: 'commercial-retail' } },
+    { params: { category: 'video' } },
+  ];
+}
+
+const { category } = Astro.params;
+const page = pages[category ?? ''] ?? { title: 'GALLERY', category: '' };
+---
+
+<SiteLayout title={`${page.title} | Mochron Design`}>
+  <main class="marble-bg min-h-screen px-6 py-24 md:px-12 md:py-32">
+    <div class="mx-auto max-w-7xl">
+      <GalleryCategoryNav activeCategory={page.category} />
+      <p class="py-24 text-center text-sm tracking-[0.2em] text-pins-muted uppercase">
+        Projects coming soon
+      </p>
+    </div>
+  </main>
+</SiteLayout>

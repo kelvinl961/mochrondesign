@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Artistry Zen project cover">
+  <rect width="1200" height="900" fill="#e8e4dc"/>
+  <rect x="120" y="100" width="960" height="700" fill="#c9c3b8" opacity="0.5"/>
+  <circle cx="600" cy="450" r="180" fill="#a39e94" opacity="0.25"/>
+  <rect x="200" y="620" width="800" height="8" fill="#8a857c" opacity="0.3"/>
+</svg>

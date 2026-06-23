@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Earthy Elegance project cover">
+  <rect width="1200" height="900" fill="#d4c4b0"/>
+  <rect x="80" y="120" width="520" height="660" fill="#8b7355" opacity="0.35"/>
+  <rect x="640" y="200" width="480" height="120" fill="#5c4a3a" opacity="0.25"/>
+  <rect x="640" y="360" width="320" height="420" fill="#a69076" opacity="0.4"/>
+  <line x1="80" y1="820" x2="1120" y2="820" stroke="#5c4a3a" stroke-width="1" opacity="0.3"/>
+</svg>

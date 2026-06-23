@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: kelvinl961/mochrondesign
+
+media_folder: public/images/projects
+public_folder: /images/projects
+
+collections:
+  - name: projects
+    label: Projects
+    label_singular: Project
+    folder: src/content/projects
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}} — {{location}}"
+    fields:
+      - { label: Project Title, name: title, widget: string }
+      - { label: Location, name: location, widget: string }
+      - { label: Property Type, name: propertyType, widget: string, required: false }
+      - label: Gallery Tab
+        name: projectTab
+        widget: select
+        default: completed
+        options:
+          - { label: Completed Project, value: completed }
+          - { label: Visualization, value: visualization }
+      - { label: Project Cover Image, name: image, widget: image }
+      - label: Gallery Images
+        name: gallery
+        widget: list
+        required: false
+        summary: "{{fields.image}}"
+        field: { label: Image, name: image, widget: image }
+      - { label: Design Concept, name: designConcept, widget: string, required: false }
+      - { label: Designer, name: designer, widget: string, required: false }
+      - { label: Description, name: description, widget: markdown }

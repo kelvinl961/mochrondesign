@@ -1,0 +1,72 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import GalleryGrid from './GalleryGrid.astro';
+
+interface Props {
+  completed: CollectionEntry<'projects'>[];
+  visualization: CollectionEntry<'projects'>[];
+}
+
+const { completed, visualization } = Astro.props;
+---
+
+<div class="mb-12 flex flex-wrap gap-3">
+  <button
+    type="button"
+    class="gallery-tab active bg-[#d9d9d9] px-5 py-2 text-[10px] tracking-[0.25em] text-black uppercase transition"
+    data-tab="completed"
+    role="tab"
+    aria-selected="true"
+    aria-controls="gallery-panel-completed"
+  >
+    Completed Project
+  </button>
+  <button
+    type="button"
+    class="gallery-tab bg-pins-grey px-5 py-2 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-black"
+    data-tab="visualization"
+    role="tab"
+    aria-selected="false"
+    aria-controls="gallery-panel-visualization"
+  >
+    Visualization
+  </button>
+</div>
+
+<GalleryGrid projects={completed} tabId="completed" />
+<GalleryGrid projects={visualization} tabId="visualization" />
+
+<script>
+  const tabs = [...document.querySelectorAll('.gallery-tab')];
+  const panels = [...document.querySelectorAll('.gallery-panel')];
+
+  function activateTab(tabName: string) {
+    tabs.forEach((tab) => {
+      const isActive = tab.getAttribute('data-tab') === tabName;
+      tab.setAttribute('aria-selected', String(isActive));
+      tab.classList.toggle('bg-[#d9d9d9]', isActive);
+      tab.classList.toggle('text-black', isActive);
+      tab.classList.toggle('bg-pins-grey', !isActive);
+      tab.classList.toggle('text-white', !isActive);
+    });
+
+    panels.forEach((panel) => {
+      const isActive = panel.getAttribute('data-tab-panel') === tabName;
+      panel.classList.toggle('hidden', !isActive);
+    });
+
+    history.replaceState(null, '', `#${tabName}`);
+  }
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const tabName = tab.getAttribute('data-tab');
+      if (tabName) activateTab(tabName);
+    });
+  });
+
+  const hash = window.location.hash.replace('#', '');
+  if (hash === 'visualization' || hash === 'completed') {
+    activateTab(hash);
+  }
+</script>

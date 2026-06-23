@@ -1,0 +1,183 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="About Us | Mochron Design"
+  description="About Mochron Design — interior design and architecture studio"
+>
+  <main class="bg-pins-light">
+    <section class="marble-bg px-6 py-24 md:px-12 md:py-32">
+      <div class="mx-auto max-w-5xl">
+        <h1 class="mb-10 text-3xl font-light leading-relaxed md:text-5xl">
+          About Us
+        </h1>
+        <p class="max-w-4xl text-lg font-light leading-relaxed text-black/80 md:text-2xl">
+          Mochron Design was founded on a belief: that great design is not just
+          about aesthetics, but about the way a space supports the rhythm of daily
+          life. We've worked closely with owners to craft interiors that are calm,
+          intentional, and beautifully functional.
+        </p>
+      </div>
+    </section>
+
+    <section class="grid min-h-[70vh] grid-cols-1 md:grid-cols-2">
+      <div class="relative min-h-[50vh] bg-[#d9d9d9]">
+        <img
+          src="/images/projects/earthy-elegance.svg"
+          alt="Studio interior"
+          class="h-full min-h-[50vh] w-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div class="flex flex-col justify-center bg-[#ececec] px-8 py-16 md:px-16">
+        <p class="mb-3 text-xs tracking-[0.35em] text-pins-muted uppercase">Our</p>
+        <h2 class="mb-8 text-4xl tracking-pins uppercase md:text-5xl">Story</h2>
+        <p class="text-sm font-light leading-8 text-black/80 md:text-base">
+          Mochron Design was founded on a belief: that great design is not just
+          about aesthetics, but about the way a space supports the rhythm of daily
+          life. Over the years, we have received numerous awards locally and
+          internationally, affirming our commitment to innovative design and
+          exceptional craftsmanship. Each project is a testament to our dedication
+          to individuality, quality, and timeless design.
+        </p>
+        <div class="mt-10 space-y-6 text-sm font-light leading-8 tracking-[0.18em] uppercase">
+          <p>
+            <span class="text-pins-muted">People.</span> Understanding how you live,
+            so we can design a space that feels like home
+          </p>
+          <p>
+            <span class="text-pins-muted">Nature.</span> Using materials and layouts
+            that connect with natural light, warmth, and flow
+          </p>
+          <p>
+            <span class="text-pins-muted">Balance.</span> Blending beauty and practicality,
+            ensuring your space works
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="marble-bg px-6 py-24 md:px-12 md:py-32">
+      <div class="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2">
+        <div>
+          <p class="mb-3 text-xs tracking-[0.35em] text-pins-muted uppercase">Our</p>
+          <h2 class="mb-8 text-4xl tracking-pins uppercase">Location</h2>
+          <button
+            type="button"
+            class="bg-pins-grey px-6 py-3 text-[10px] tracking-[0.25em] text-white uppercase"
+          >
+            contact us
+          </button>
+        </div>
+
+        <div class="bg-white/70 p-8 md:p-10">
+          <h3 class="mb-8 text-center text-sm tracking-[0.25em] uppercase">message us</h3>
+          <form class="space-y-4" action="mailto:hello@mochron.design" method="post">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <input
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
+              />
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
+              />
+            </div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+              class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
+            />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone"
+              class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
+            />
+            <textarea
+              name="otherInfo"
+              placeholder="Other info"
+              rows="3"
+              class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
+            ></textarea>
+
+            <fieldset class="space-y-3">
+              <legend class="text-xs tracking-[0.2em] text-pins-muted uppercase">
+                Property type
+              </legend>
+              <div class="grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+                {
+                  ['Apartment', 'Condo', 'Terrace', 'Semi - D', 'Bungalow', 'Shophouse', 'Commercial'].map(
+                    (type) => (
+                      <label class="flex items-center gap-2">
+                        <input type="radio" name="propertyType" value={type} />
+                        {type}
+                      </label>
+                    ),
+                  )
+                }
+              </div>
+            </fieldset>
+
+            <fieldset class="space-y-3">
+              <legend class="text-xs tracking-[0.2em] text-pins-muted uppercase">
+                Property Status
+              </legend>
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                {
+                  ['New unit', 'Resale unit', 'Existing unit', 'Under Construction'].map(
+                    (status) => (
+                      <label class="flex items-center gap-2">
+                        <input type="radio" name="propertyStatus" value={status} />
+                        {status}
+                      </label>
+                    ),
+                  )
+                }
+              </div>
+            </fieldset>
+
+            <input
+              type="text"
+              name="location"
+              placeholder="Location of the house"
+              class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
+            />
+            <input
+              type="text"
+              name="budget"
+              placeholder="Budget of renovation"
+              class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
+            />
+            <textarea
+              name="idea"
+              placeholder="General idea what do you plan to do :"
+              rows="4"
+              class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
+            ></textarea>
+
+            <button
+              type="submit"
+              class="w-full bg-black px-6 py-4 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-pins-grey"
+            >
+              Submit
+            </button>
+          </form>
+
+          <p class="mt-10 text-center text-sm font-light leading-7 text-black/70">
+            call us ：03-7887 2752 / 014-3644 551<br />
+            visit us ：D 3-3, Pusat Komersial Parklane, Jalan SS 7/26, 47301 Petaling
+            Jaya, Selangor
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>

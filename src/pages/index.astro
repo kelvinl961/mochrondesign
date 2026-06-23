@@ -1,0 +1,303 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getCollection } from 'astro:content';
+import { awards } from '../data/site';
+import { projectUrl } from '../utils/projects';
+
+const projects = await getCollection('projects');
+const sortedProjects = [...projects].sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+
+const heroSlides = sortedProjects.map((project) => project.data.image);
+
+const formatSubtitle = (project: (typeof sortedProjects)[number]) => {
+  const type = project.data.propertyType?.trim();
+  const location = project.data.location.trim();
+  if (type && location) return `${type} at ${location}`;
+  return type || location;
+};
+---
+
+<SiteLayout title="HOME | Mochron Design">
+  <header class="relative h-screen w-full overflow-hidden">
+    <div id="hero-slider" class="relative h-full w-full">
+      {
+        heroSlides.map((slide, index) => (
+          <div
+            class:list={[
+              'hero-slide absolute inset-0 transition-opacity duration-700',
+              index === 0 ? 'opacity-100' : 'opacity-0',
+            ]}
+            data-index={index}
+          >
+            <img
+              src={slide}
+              alt=""
+              class="h-full w-full object-cover"
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10"
+    >
+    </div>
+
+    <h1
+      class="pointer-events-none absolute bottom-24 left-1/2 max-w-4xl -translate-x-1/2 px-6 text-center text-3xl font-light tracking-[0.12em] text-white drop-shadow md:text-5xl"
+    >
+      Design your story into lifestyle
+    </h1>
+
+    <button
+      id="hero-prev"
+      type="button"
+      class="absolute left-8 top-1/2 z-10 -translate-y-1/2 text-3xl font-light text-white/80 transition hover:text-white"
+      aria-label="Previous slide"
+    >
+      ←
+    </button>
+    <button
+      id="hero-next"
+      type="button"
+      class="absolute right-24 top-1/2 z-10 -translate-y-1/2 text-3xl font-light text-white/80 transition hover:text-white"
+      aria-label="Next slide"
+    >
+      →
+    </button>
+
+    <div class="absolute bottom-0 left-0 right-0 z-10 h-1 bg-white/20">
+      <div id="hero-progress" class="h-full w-0 bg-white transition-all duration-300"></div>
+    </div>
+  </header>
+
+  <section class="h-24 bg-pins-light md:h-32"></section>
+
+  <section class="grid min-h-[70vh] grid-cols-1 md:grid-cols-2">
+    <div class="relative overflow-hidden bg-pins-light px-10 py-16 md:px-16">
+      <div class="mb-10 flex items-center gap-3">
+        <span class="inline-block h-3 w-3 bg-pins-accent"></span>
+        <span class="text-sm font-medium tracking-pins uppercase">Mochron</span>
+      </div>
+
+      <p class="mb-3 text-xs tracking-[0.35em] text-pins-muted uppercase">Award</p>
+      <h2 class="mb-10 text-3xl font-normal tracking-pins uppercase md:text-4xl">Award</h2>
+
+      <div class="relative h-[42vh] overflow-hidden">
+        <div class="marquee-track space-y-4 text-sm font-light leading-8 text-pins-muted">
+          {
+            [...awards, ...awards].map((award) => (
+              <p>{award}</p>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="relative min-h-[50vh]">
+      <img
+        src={sortedProjects[0]?.data.image ?? '/images/projects/earthy-elegance.svg'}
+        alt="Award feature"
+        class="h-full min-h-[50vh] w-full object-cover"
+        loading="lazy"
+      />
+    </div>
+  </section>
+
+  <section id="projects" class="marble-bg px-6 py-24 md:px-12 md:py-32">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-16 flex flex-wrap items-end justify-between gap-6">
+        <div>
+          <div class="mb-4 flex items-start gap-4">
+            <span class="mt-2 h-12 w-px bg-black"></span>
+            <div>
+              <p class="mb-2 text-xs tracking-[0.35em] text-pins-muted uppercase">Explore</p>
+              <h2 class="font-display text-5xl font-light md:text-7xl">Projects</h2>
+            </div>
+          </div>
+        </div>
+        <a
+          href="/gallery"
+          class="bg-pins-grey px-5 py-2 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-black"
+        >
+          more
+        </a>
+      </div>
+
+      <div
+        id="projects-grid"
+        class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5"
+      >
+        {
+          sortedProjects.map((project, index) => (
+            <article
+              class:list={[
+                'overflow-hidden bg-white',
+                index % 3 === 2 ? 'md:col-span-2 md:max-w-[62%] md:justify-self-end' : '',
+                index % 3 === 1 ? 'md:mt-24' : '',
+              ]}
+            >
+              <a href={projectUrl(project)} class="group block">
+                <div
+                  class:list={[
+                    'overflow-hidden',
+                    index % 3 === 0 ? 'aspect-[3/4]' : 'aspect-[4/3]',
+                  ]}
+                >
+                  <img
+                    src={project.data.image}
+                    alt={project.data.title}
+                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    sortedProjects.map((project, index) => (
+      <section id={`project-${project.id}`} class="bg-pins-light">
+        <div class="grid min-h-[55vh] grid-cols-1 md:grid-cols-2">
+          <div
+            class:list={[
+              'relative min-h-[45vh]',
+              index % 2 === 1 ? 'md:order-2' : '',
+            ]}
+          >
+            <img
+              src={project.data.image}
+              alt={project.data.title}
+              class="h-full min-h-[45vh] w-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
+              <span class="h-2 w-2 bg-white"></span>
+              <span class="h-2 w-2 bg-white/40"></span>
+              <span class="h-2 w-2 bg-white/40"></span>
+            </div>
+          </div>
+          <div
+            class:list={[
+              'min-h-[45vh] bg-black',
+              index % 2 === 1 ? 'md:order-1' : '',
+            ]}
+          ></div>
+        </div>
+
+        <div class="marble-bg border-y border-black/5 px-6 py-5 md:px-10">
+          <a
+            href={projectUrl(project)}
+            class="inline-flex items-center gap-4 text-sm tracking-[0.28em] uppercase transition hover:opacity-60"
+          >
+            <span>{project.data.title}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2">
+          <div class="min-h-[42vh] bg-black"></div>
+          <div class="relative min-h-[42vh] bg-[#d9d9d9]">
+            <img
+              src={project.data.image}
+              alt={`${project.data.title} detail`}
+              class="h-full min-h-[42vh] w-full object-cover opacity-90"
+              loading="lazy"
+            />
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/50 to-transparent p-6 text-white">
+              <p class="text-[10px] tracking-[0.3em] uppercase">{formatSubtitle(project)}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section id="about" class="marble-bg px-6 py-24 md:px-12 md:py-32">
+    <div class="mx-auto max-w-5xl">
+      <p class="mb-4 text-xs tracking-[0.35em] text-pins-muted uppercase">About</p>
+      <h2 class="max-w-4xl text-2xl font-light leading-relaxed md:text-4xl">
+        At Mochron Design, we believe that a home should be more than just
+        beautiful — it should be personal, intentional, and timeless
+      </h2>
+      <a
+        href="/about-us"
+        class="mt-8 inline-block text-xs tracking-[0.25em] uppercase underline-offset-4 hover:underline"
+      >
+        Read more →
+      </a>
+    </div>
+  </section>
+
+  <section id="service" class="bg-pins-light px-6 py-24 md:px-12 md:py-32">
+    <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-[1fr_2fr]">
+      <div>
+        <p class="mb-2 text-xs tracking-[0.35em] text-pins-muted uppercase">Our</p>
+        <h2 class="text-3xl tracking-pins uppercase md:text-4xl">Service</h2>
+      </div>
+      <div>
+        <p class="max-w-3xl text-sm font-light leading-8 text-black/80 md:text-base">
+          Mochron Design specializes in interior design &amp; architecture for
+          residential, commercial as well as turnkey project management. Our
+          mission is to create spaces that are uniquely tailored to each client's
+          lifestyle and vision.
+        </p>
+        <a
+          href="/service-process"
+          class="mt-8 inline-block text-xs tracking-[0.25em] uppercase underline-offset-4 hover:underline"
+        >
+          View process →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const slides = [...document.querySelectorAll('.hero-slide')];
+    const prev = document.getElementById('hero-prev');
+    const next = document.getElementById('hero-next');
+    const progress = document.getElementById('hero-progress');
+    let currentSlide = 0;
+    let timer: ReturnType<typeof setInterval>;
+
+    function showSlide(index: number) {
+      if (!slides.length) return;
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('opacity-100', i === currentSlide);
+        slide.classList.toggle('opacity-0', i !== currentSlide);
+      });
+      if (progress) {
+        progress.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+      }
+    }
+
+    function startAutoplay() {
+      clearInterval(timer);
+      timer = setInterval(() => showSlide(currentSlide + 1), 5000);
+    }
+
+    prev?.addEventListener('click', () => {
+      showSlide(currentSlide - 1);
+      startAutoplay();
+    });
+
+    next?.addEventListener('click', () => {
+      showSlide(currentSlide + 1);
+      startAutoplay();
+    });
+
+    if (slides.length) {
+      showSlide(0);
+      startAutoplay();
+    }
+  </script>
+</SiteLayout>

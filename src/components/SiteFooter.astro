@@ -1,0 +1,40 @@
+---
+import { awardsFooterText, contact } from '../data/site';
+---
+
+<footer class="bg-pins-light px-6 py-20 md:px-12">
+  <div class="mx-auto grid max-w-6xl gap-16 md:grid-cols-2">
+    <div>
+      <p class="mb-4 text-xs tracking-[0.35em] text-pins-muted uppercase">Award</p>
+      <p class="whitespace-pre-line text-sm font-light leading-8 text-pins-muted">
+        {awardsFooterText}
+      </p>
+    </div>
+    <div>
+      <p class="mb-4 text-xs tracking-[0.35em] text-pins-muted uppercase">Contact</p>
+      <div class="space-y-4 text-sm font-light leading-7 text-black/80">
+        {
+          contact.branches.map((branch) => (
+            <p>
+              <span class="block text-xs tracking-[0.2em] text-pins-muted uppercase">
+                ({branch.label})
+              </span>
+              {branch.address}
+            </p>
+          ))
+        }
+        <p class="text-2xl font-light tracking-wide">
+          {contact.phones.join('  ')}
+        </p>
+        <p class="text-xs tracking-[0.35em] text-pins-muted uppercase">Office Hour</p>
+        <p class="text-xl font-light">{contact.hours}</p>
+        <a
+          href={`mailto:${contact.email}`}
+          class="block text-2xl font-light transition hover:opacity-60"
+        >
+          {contact.email}
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

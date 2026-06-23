@@ -1,0 +1,35 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { serviceSteps } from '../data/site';
+---
+
+<SiteLayout
+  title="Service Process | Mochron Design"
+  description="Mochron Design service process — from proposal to handover"
+>
+  <main class="marble-bg min-h-screen px-6 py-24 md:px-12 md:py-32">
+    <div class="mx-auto max-w-7xl">
+      <h1 class="mb-16 text-4xl font-light tracking-wide md:text-6xl">Service Process</h1>
+
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          serviceSteps.map((step) => (
+            <article class="border border-black/10 bg-white/50 p-8 transition hover:bg-white/80">
+              <p class="mb-3 text-[10px] tracking-[0.3em] text-pins-muted uppercase">
+                {step.step}
+              </p>
+              <h2 class="mb-5 text-xl tracking-[0.12em] uppercase">{step.title}</h2>
+              {step.items.length > 0 && (
+                <ul class="space-y-2 text-sm font-light leading-7 text-black/75">
+                  {step.items.map((item) => (
+                    <li>- {item}</li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </main>
+</SiteLayout>

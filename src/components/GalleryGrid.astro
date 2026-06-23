@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatProjectCaption, projectUrl } from '../utils/projects';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+  tabId: string;
+}
+
+const { projects, tabId } = Astro.props;
+---
+
+<div
+  id={`gallery-panel-${tabId}`}
+  class:list={['gallery-panel', tabId === 'completed' ? '' : 'hidden']}
+  data-tab-panel={tabId}
+  role="tabpanel"
+>
+  <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-x-8 md:gap-y-16">
+    {
+      projects.map((project) => {
+        const caption = formatProjectCaption(project);
+        return (
+          <article class="text-center">
+            <a href={projectUrl(project)} class="group block">
+              <div class="mb-6 aspect-[4/3] overflow-hidden bg-[#d9d9d9]">
+                <img
+                  src={project.data.image}
+                  alt={project.data.title}
+                  class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                  loading="lazy"
+                />
+              </div>
+              <p class="mb-2 text-sm tracking-[0.22em] uppercase">{caption.title}</p>
+              <p class="text-sm font-light lowercase text-black/70">{caption.subtitle}</p>
+            </a>
+          </article>
+        );
+      })
+    }
+  </div>
+
+  {
+    projects.length === 0 && (
+      <p class="py-24 text-center text-sm tracking-[0.2em] text-pins-muted uppercase">
+        Projects coming soon
+      </p>
+    )
+  }
+</div>
