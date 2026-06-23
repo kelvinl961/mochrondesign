@@ -1,5 +1,7 @@
 ---
-// Sveltia CMS panel — config lives at /admin/config.yml (public/admin/config.yml)
+// Hardcoded admin credentials — change these before going live.
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'mochron2024';
 ---
 
 <!doctype html>
@@ -7,12 +9,213 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>Content Manager — Mochron Design</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin Login — Mochron Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+        background: #f2f2f2;
+        color: #111;
+      }
+
+      #login-screen {
+        display: flex;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+
+      .login-card {
+        width: 100%;
+        max-width: 24rem;
+        background: #fff;
+        padding: 2.5rem 2rem;
+        box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+      }
+
+      .login-card h1 {
+        margin: 0 0 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: #9a9a9a;
+      }
+
+      .login-card p {
+        margin: 0 0 2rem;
+        font-size: 1.25rem;
+        font-weight: 300;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #9a9a9a;
+      }
+
+      input {
+        width: 100%;
+        margin-bottom: 1.25rem;
+        border: 1px solid #ddd;
+        background: #fafafa;
+        padding: 0.85rem 1rem;
+        font: inherit;
+        font-size: 0.9rem;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: #111;
+        background: #fff;
+      }
+
+      button[type='submit'] {
+        width: 100%;
+        border: 0;
+        background: #111;
+        color: #fff;
+        padding: 0.95rem 1rem;
+        font: inherit;
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      button[type='submit']:hover {
+        background: #333;
+      }
+
+      #login-error {
+        display: none;
+        margin-bottom: 1rem;
+        font-size: 0.8rem;
+        color: #b00020;
+      }
+
+      #login-error.visible {
+        display: block;
+      }
+
+      #logout-btn {
+        display: none;
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 9999;
+        border: 0;
+        background: rgb(0 0 0 / 75%);
+        color: #fff;
+        padding: 0.55rem 0.9rem;
+        font: inherit;
+        font-size: 0.6rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      #logout-btn.visible {
+        display: block;
+      }
+
+      #cms-root.hidden {
+        display: none;
+      }
+    </style>
   </head>
   <body>
-    <script
-      src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"
-      type="module"></script>
+    <div id="login-screen">
+      <form class="login-card" id="login-form">
+        <h1>Content Manager</h1>
+        <p>Mochron Design</p>
+        <p id="login-error">Invalid username or password.</p>
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required />
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        />
+        <button type="submit">Sign in</button>
+      </form>
+    </div>
+
+    <button id="logout-btn" type="button">Sign out</button>
+    <div id="cms-root" class="hidden"></div>
+
+    <script define:vars={{ ADMIN_USERNAME, ADMIN_PASSWORD }}>
+      const AUTH_KEY = 'mochron-admin-auth';
+      const loginScreen = document.getElementById('login-screen');
+      const loginForm = document.getElementById('login-form');
+      const loginError = document.getElementById('login-error');
+      const cmsRoot = document.getElementById('cms-root');
+      const logoutBtn = document.getElementById('logout-btn');
+
+      function loadCms() {
+        loginScreen.style.display = 'none';
+        cmsRoot.classList.remove('hidden');
+        logoutBtn.classList.add('visible');
+
+        if (!document.getElementById('sveltia-cms-script')) {
+          const script = document.createElement('script');
+          script.id = 'sveltia-cms-script';
+          script.src = 'https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js';
+          script.type = 'module';
+          document.body.appendChild(script);
+        }
+      }
+
+      function showLogin() {
+        sessionStorage.removeItem(AUTH_KEY);
+        loginScreen.style.display = 'flex';
+        cmsRoot.classList.add('hidden');
+        logoutBtn.classList.remove('visible');
+        loginError.classList.remove('visible');
+        document.getElementById('password').value = '';
+      }
+
+      loginForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+          sessionStorage.setItem(AUTH_KEY, 'true');
+          loadCms();
+          return;
+        }
+
+        loginError.classList.add('visible');
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        showLogin();
+        window.location.reload();
+      });
+
+      if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+        loadCms();
+      }
+    </script>
   </body>
 </html>
