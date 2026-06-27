@@ -22,14 +22,14 @@ const mapSrc = primaryBranch?.mapQuery
             </p>
           ))
         }
-        <p class="text-2xl font-light tracking-wide">
+        <p class="font-light tracking-wide">
           {contact.phones.join('  ')}
         </p>
         <p class="text-xs tracking-[0.35em] text-pins-muted uppercase">Office Hour</p>
-        <p class="text-xl font-light">{contact.hours}</p>
+        <p class="font-light">{contact.hours}</p>
         <a
           href={`mailto:${contact.email}`}
-          class="block text-2xl font-light transition hover:opacity-60"
+          class="block font-light transition hover:opacity-60"
         >
           {contact.email}
         </a>

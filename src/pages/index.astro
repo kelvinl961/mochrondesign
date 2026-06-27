@@ -1,25 +1,46 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getCollection } from 'astro:content';
+import type { ProjectTab } from '../utils/projects';
 
 export const prerender = true;
 
 const heroBanner = '/images/home-hero-banner.png';
 
 const projects = await getCollection('projects');
-const completedCover = projects.find((p) => p.data.projectTab === 'completed')?.data.image;
-const visualizationCover = projects.find((p) => p.data.projectTab === 'visualization')?.data.image;
+
+function getCategoryImages(tab: ProjectTab) {
+  const images = new Set<string>();
+
+  for (const project of projects) {
+    if (project.data.projectTab !== tab) continue;
+
+    if (project.data.image) images.add(project.data.image);
+
+    for (const item of project.data.gallery ?? []) {
+      const url = typeof item === 'string' ? item : item.image;
+      if (url) images.add(url);
+    }
+  }
+
+  return [...images];
+}
+
+const completedImages = getCategoryImages('completed');
+const visualizationImages = getCategoryImages('visualization');
 
 const projectCategories = [
   {
     title: 'Completed Projects',
     href: '/gallery#completed',
-    image: completedCover,
+    category: 'completed',
+    images: completedImages,
   },
   {
     title: 'Visualization',
     href: '/gallery#visualization',
-    image: visualizationCover,
+    category: 'visualization',
+    images: visualizationImages,
   },
 ];
 ---
@@ -55,12 +76,17 @@ const projectCategories = [
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
         {
           projectCategories.map((category) => (
-            <a href={category.href} class="group block overflow-hidden bg-white">
+            <a
+              href={category.href}
+              class="group block overflow-hidden bg-white"
+              data-project-category={category.category}
+            >
               <div class="aspect-[4/3] overflow-hidden">
                 {
-                  category.image ? (
+                  category.images.length > 0 ? (
                     <img
-                      src={category.image}
+                      data-random-cover
+                      src={category.images[0]}
                       alt={category.title}
                       class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                       loading="lazy"
@@ -79,6 +105,23 @@ const projectCategories = [
       </div>
     </div>
   </section>
+
+  <script define:vars={{ completedImages, visualizationImages }}>
+    const imagesByCategory = {
+      completed: completedImages,
+      visualization: visualizationImages,
+    };
+
+    document.querySelectorAll('[data-project-category]').forEach((card) => {
+      const category = card.getAttribute('data-project-category');
+      const images = imagesByCategory[category] ?? [];
+      const img = card.querySelector('[data-random-cover]');
+
+      if (!category || !img || images.length === 0) return;
+
+      img.src = images[Math.floor(Math.random() * images.length)];
+    });
+  </script>
 
   <section id="about" class="marble-bg px-6 py-16 md:px-12 md:py-32">
     <div class="mx-auto max-w-5xl">

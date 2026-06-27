@@ -10,27 +10,38 @@ interface Props {
 const { completed, visualization } = Astro.props;
 ---
 
-<div class="mb-12 flex flex-wrap justify-center gap-3">
-  <button
-    type="button"
-    class="gallery-tab active bg-[#d9d9d9] px-5 py-2 text-[10px] tracking-[0.25em] text-black uppercase transition"
-    data-tab="completed"
-    role="tab"
-    aria-selected="true"
-    aria-controls="gallery-panel-completed"
-  >
-    Completed Project
-  </button>
-  <button
-    type="button"
-    class="gallery-tab bg-pins-grey px-5 py-2 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-black"
-    data-tab="visualization"
-    role="tab"
-    aria-selected="false"
-    aria-controls="gallery-panel-visualization"
-  >
-    Visualization
-  </button>
+<div class="mb-12 flex flex-wrap items-center justify-center gap-4 md:gap-6">
+  <img
+    src="/images/brand/watermark.png"
+    alt="Mochron Design"
+    class="h-9 w-auto max-w-[180px] object-contain object-left md:h-11 md:max-w-[220px]"
+    width="220"
+    height="53"
+    loading="eager"
+  />
+  <span class="hidden h-10 w-px shrink-0 bg-black sm:block md:h-12" aria-hidden="true"></span>
+  <div class="flex flex-wrap justify-center gap-3">
+    <button
+      type="button"
+      class="gallery-tab active bg-[#d9d9d9] px-5 py-2 text-[10px] tracking-[0.25em] text-black uppercase transition"
+      data-tab="completed"
+      role="tab"
+      aria-selected="true"
+      aria-controls="gallery-panel-completed"
+    >
+      Completed Project
+    </button>
+    <button
+      type="button"
+      class="gallery-tab bg-pins-grey px-5 py-2 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-black"
+      data-tab="visualization"
+      role="tab"
+      aria-selected="false"
+      aria-controls="gallery-panel-visualization"
+    >
+      Visualization
+    </button>
+  </div>
 </div>
 
 <GalleryGrid projects={completed} tabId="completed" />
