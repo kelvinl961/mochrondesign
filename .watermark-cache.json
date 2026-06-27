@@ -1,1 +1,14 @@
-{}
+{
+  "public/images/projects/Scene 1 copy.png": {
+    "sourceHash": "3d31f31e208ef9a2237af4d19118da278ff56cdb259abea06ae27dfac203b8f6",
+    "watermarkedHash": "f0c3dcf382a1c8614f1d151c1513d6deb4ae985778adc4af1440a73d61c9ee40"
+  },
+  "public/images/projects/Scene 2 copy.png": {
+    "sourceHash": "3f9dff0b4aad79b2f160380707b853b86d5afa12de57a798626d9401e075fa46",
+    "watermarkedHash": "d27f3c40ae26075ac96423ee642e6729d938c4e616a29f40ddf91213da83e2a0"
+  },
+  "public/images/projects/Scene 3 copy.png": {
+    "sourceHash": "656d052623a7bf9119f9c373948f396e0552f636bff5bab9c24b0933289a2675",
+    "watermarkedHash": "6fcd6ac75286ae26dac9c08bf04e0a6d9c041ab4da569735ba120ed7123d1f01"
+  }
+}
