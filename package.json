@@ -8,7 +8,8 @@
     "watermark:projects": "node scripts/watermark-images.mjs",
     "prebuild": "npm run watermark:projects",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.0",

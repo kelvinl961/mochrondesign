@@ -224,7 +224,7 @@ Hardcoded content lives in `src/data/site.ts` and individual page files. Additio
 6. Site is rebuilt and redeployed to Cloudflare
 7. New project appears on `/gallery` and `/projects/new-project`
 
-**Important:** Step 6 is manual today. GitHub updates immediately; the live site updates only after `npm run build` and `wrangler deploy`. This can be automated with a GitHub Action that rebuilds on every push to `main`.
+**Important:** Step 6 runs automatically via the `Deploy site` GitHub Action on every push to `main` (after CMS saves or watermark commits). Add `CF_API_TOKEN` and `CF_ACCOUNT_ID` repository secrets for it to work.
 
 ---
 
