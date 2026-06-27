@@ -93,9 +93,21 @@ export async function applyWatermark(imageBuffer, watermarkBuffer, options = {})
   const left = Math.round((meta.width - wmWidth) / 2);
   const top = Math.max(padding, meta.height - wmHeight - padding);
 
-  return image
-    .composite([{ input: watermark, left, top }])
-    .toBuffer();
+  const composited = image.composite([{ input: watermark, left, top, blend: 'over' }]);
+
+  if (meta.format === 'png') {
+    return composited.png().toBuffer();
+  }
+
+  if (meta.format === 'webp') {
+    return composited.webp().toBuffer();
+  }
+
+  if (meta.format === 'avif') {
+    return composited.avif().toBuffer();
+  }
+
+  return composited.jpeg({ quality: 92 }).toBuffer();
 }
 
 /**
