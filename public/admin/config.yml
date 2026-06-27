@@ -34,10 +34,9 @@ collections:
       - { label: Project Cover Image, name: image, widget: image }
       - label: Gallery Images
         name: gallery
-        widget: list
+        widget: image
         required: false
-        summary: "{{fields.image}}"
-        field: { label: Image, name: image, widget: image }
+        multiple: true
       - { label: Design Concept, name: designConcept, widget: string, required: false }
       - { label: Designer, name: designer, widget: string, required: false }
       - { label: Description, name: description, widget: markdown }
