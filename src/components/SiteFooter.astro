@@ -1,16 +1,15 @@
 ---
-import { awardsFooterText, contact } from '../data/site';
+import { contact } from '../data/site';
+
+const primaryBranch = contact.branches[0];
+const mapSrc = primaryBranch?.mapQuery
+  ? `https://www.google.com/maps?q=${encodeURIComponent(primaryBranch.mapQuery)}&hl=en&z=16&output=embed`
+  : null;
 ---
 
-<footer class="bg-pins-light px-6 py-20 md:px-12">
-  <div class="mx-auto grid max-w-6xl gap-16 md:grid-cols-2">
-    <div>
-      <p class="mb-4 text-xs tracking-[0.35em] text-pins-muted uppercase">Award</p>
-      <p class="whitespace-pre-line text-sm font-light leading-8 text-pins-muted">
-        {awardsFooterText}
-      </p>
-    </div>
-    <div>
+<footer class="border-t border-black/10 bg-pins-light px-6 py-20 md:px-12">
+  <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:gap-0">
+    <div class="md:pr-12">
       <p class="mb-4 text-xs tracking-[0.35em] text-pins-muted uppercase">Contact</p>
       <div class="space-y-4 text-sm font-light leading-7 text-black/80">
         {
@@ -36,5 +35,23 @@ import { awardsFooterText, contact } from '../data/site';
         </a>
       </div>
     </div>
+
+    {
+      mapSrc && (
+        <div class="min-h-[280px] border-black/10 md:border-l md:pl-12">
+          <p class="mb-4 text-xs tracking-[0.35em] text-pins-muted uppercase">Location</p>
+          <div class="aspect-[4/3] w-full overflow-hidden bg-black/5 md:aspect-auto md:h-[320px]">
+            <iframe
+              title="Mochron Design on Google Maps"
+              src={mapSrc}
+              class="h-full w-full border-0 grayscale-[20%]"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+            />
+          </div>
+        </div>
+      )
+    }
   </div>
 </footer>

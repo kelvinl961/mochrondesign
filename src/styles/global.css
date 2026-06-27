@@ -5,6 +5,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
   }
 
   body {
@@ -22,31 +23,5 @@
     background-color: #f5f5f5;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     background-size: 400px 400px;
-  }
-
-  .marquee-track {
-    animation: marquee-scroll 40s linear infinite;
-  }
-
-  .marquee-track-reverse {
-    animation: marquee-scroll-reverse 45s linear infinite;
-  }
-}
-
-@keyframes marquee-scroll {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-50%);
-  }
-}
-
-@keyframes marquee-scroll-reverse {
-  from {
-    transform: translateY(-50%);
-  }
-  to {
-    transform: translateY(0);
   }
 }

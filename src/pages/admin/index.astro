@@ -181,6 +181,12 @@ const ADMIN_PASSWORD = 'mochron2024';
           script.id = 'sveltia-cms-script';
           script.src = 'https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js';
           script.type = 'module';
+          script.onload = () => {
+            const hook = document.createElement('script');
+            hook.src = '/admin/watermark-upload.js';
+            hook.defer = true;
+            document.body.appendChild(hook);
+          };
           document.body.appendChild(script);
         }
       }

@@ -11,7 +11,6 @@ const navItems = [
   { href: '/', label: 'HOME', chinese: '首页' },
   { href: '/gallery', label: 'GALLERY', chinese: '作品' },
   { href: '/about-us', label: 'About Us', chinese: '关于' },
-  { href: '/service-process', label: 'Service Process', chinese: '流程' },
 ];
 
 function isActive(href: string) {
@@ -173,6 +172,8 @@ function isActive(href: string) {
   const iconBars = menuIcon?.querySelectorAll('span');
 
   function setMenuOpen(isOpen: boolean) {
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
     toggle?.setAttribute('aria-expanded', String(isOpen));
     drawer?.setAttribute('aria-hidden', String(!isOpen));
     overlay?.setAttribute('aria-hidden', String(!isOpen));
@@ -190,7 +191,12 @@ function isActive(href: string) {
     iconBars?.[1]?.classList.toggle('-translate-y-[4px]', isOpen);
     iconBars?.[1]?.classList.toggle('-rotate-45', isOpen);
 
+    document.documentElement.classList.toggle('overflow-hidden', isOpen);
     document.body.classList.toggle('overflow-hidden', isOpen);
+    document.body.style.paddingRight = isOpen && scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
+    if (toggle instanceof HTMLElement) {
+      toggle.style.marginRight = isOpen && scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
+    }
   }
 
   toggle?.addEventListener('click', () => {

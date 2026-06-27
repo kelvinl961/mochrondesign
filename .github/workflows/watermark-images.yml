@@ -1,0 +1,40 @@
+name: Watermark project images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'public/images/projects/**'
+
+permissions:
+  contents: write
+
+jobs:
+  watermark:
+    runs-on: ubuntu-latest
+    # Skip when this workflow pushed the commit (second run is a no-op anyway).
+    if: github.actor != 'github-actions[bot]'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run watermark:projects
+
+      - name: Commit watermarked images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/images/projects .watermark-cache.json
+          if git diff --staged --quiet; then
+            echo "No watermark changes."
+            exit 0
+          fi
+          git commit -m "chore: auto-watermark project images"
+          git push

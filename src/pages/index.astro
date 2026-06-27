@@ -1,7 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { getCollection } from 'astro:content';
-import { awards } from '../data/site';
 import { projectUrl } from '../utils/projects';
 
 const projects = await getCollection('projects');
@@ -9,7 +8,9 @@ const sortedProjects = [...projects].sort((a, b) =>
   a.data.title.localeCompare(b.data.title),
 );
 
-const heroSlides = sortedProjects.map((project) => project.data.image);
+// Slider disabled until multiple hero images are available.
+// const heroSlides = sortedProjects.map((project) => project.data.image);
+const heroBanner = '/images/home-hero-banner.png';
 
 const formatSubtitle = (project: (typeof sortedProjects)[number]) => {
   const type = project.data.propertyType?.trim();
@@ -20,7 +21,15 @@ const formatSubtitle = (project: (typeof sortedProjects)[number]) => {
 ---
 
 <SiteLayout title="HOME | Mochron Design">
-  <header class="relative h-screen w-full overflow-hidden">
+  <header class="relative h-screen w-full overflow-hidden bg-pins-light">
+    <img
+      src={heroBanner}
+      alt="Mochron Design"
+      class="h-full w-full object-cover object-center"
+      loading="eager"
+    />
+
+    {/* Slider — restore when multiple hero images are available
     <div id="hero-slider" class="relative h-full w-full">
       {
         heroSlides.map((slide, index) => (
@@ -41,72 +50,19 @@ const formatSubtitle = (project: (typeof sortedProjects)[number]) => {
         ))
       }
     </div>
-
-    <div
-      class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10"
-    >
-    </div>
-
-    <h1
-      class="pointer-events-none absolute bottom-24 left-1/2 max-w-4xl -translate-x-1/2 px-6 text-center text-3xl font-light tracking-[0.12em] text-white drop-shadow md:text-5xl"
-    >
-      Design your story into lifestyle
-    </h1>
-
-    <button
-      id="hero-prev"
-      type="button"
-      class="absolute left-8 top-1/2 z-10 -translate-y-1/2 text-3xl font-light text-white/80 transition hover:text-white"
-      aria-label="Previous slide"
-    >
-      ←
-    </button>
-    <button
-      id="hero-next"
-      type="button"
-      class="absolute right-24 top-1/2 z-10 -translate-y-1/2 text-3xl font-light text-white/80 transition hover:text-white"
-      aria-label="Next slide"
-    >
-      →
-    </button>
-
+    <button id="hero-prev" type="button" ...>←</button>
+    <button id="hero-next" type="button" ...>→</button>
     <div class="absolute bottom-0 left-0 right-0 z-10 h-1 bg-white/20">
       <div id="hero-progress" class="h-full w-0 bg-white transition-all duration-300"></div>
     </div>
+    */}
+
+    <h1
+      class="pointer-events-none absolute bottom-24 left-1/2 max-w-4xl -translate-x-1/2 px-6 text-center text-2xl font-light tracking-[0.12em] text-black/75 md:text-4xl"
+    >
+      Designing &amp; building timeless space
+    </h1>
   </header>
-
-  <section class="h-24 bg-pins-light md:h-32"></section>
-
-  <section class="grid min-h-[70vh] grid-cols-1 md:grid-cols-2">
-    <div class="relative overflow-hidden bg-pins-light px-10 py-16 md:px-16">
-      <div class="mb-10 flex items-center gap-3">
-        <span class="inline-block h-3 w-3 bg-pins-accent"></span>
-        <span class="text-sm font-medium tracking-pins uppercase">Mochron</span>
-      </div>
-
-      <p class="mb-3 text-xs tracking-[0.35em] text-pins-muted uppercase">Award</p>
-      <h2 class="mb-10 text-3xl font-normal tracking-pins uppercase md:text-4xl">Award</h2>
-
-      <div class="relative h-[42vh] overflow-hidden">
-        <div class="marquee-track space-y-4 text-sm font-light leading-8 text-pins-muted">
-          {
-            [...awards, ...awards].map((award) => (
-              <p>{award}</p>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-
-    <div class="relative min-h-[50vh]">
-      <img
-        src={sortedProjects[0]?.data.image ?? '/images/projects/earthy-elegance.svg'}
-        alt="Award feature"
-        class="h-full min-h-[50vh] w-full object-cover"
-        loading="lazy"
-      />
-    </div>
-  </section>
 
   <section id="projects" class="marble-bg px-6 py-24 md:px-12 md:py-32">
     <div class="mx-auto max-w-7xl">
@@ -225,8 +181,7 @@ const formatSubtitle = (project: (typeof sortedProjects)[number]) => {
     <div class="mx-auto max-w-5xl">
       <p class="mb-4 text-xs tracking-[0.35em] text-pins-muted uppercase">About</p>
       <h2 class="max-w-4xl text-2xl font-light leading-relaxed md:text-4xl">
-        At Mochron Design, we believe that a home should be more than just
-        beautiful — it should be personal, intentional, and timeless
+        Uniquely Tailored for You and Your Lifestyle
       </h2>
       <a
         href="/about-us"
@@ -244,60 +199,41 @@ const formatSubtitle = (project: (typeof sortedProjects)[number]) => {
         <h2 class="text-3xl tracking-pins uppercase md:text-4xl">Service</h2>
       </div>
       <div>
-        <p class="max-w-3xl text-sm font-light leading-8 text-black/80 md:text-base">
-          Mochron Design specializes in interior design &amp; architecture for
-          residential, commercial as well as turnkey project management. Our
-          mission is to create spaces that are uniquely tailored to each client's
-          lifestyle and vision.
-        </p>
-        <a
-          href="/service-process"
-          class="mt-8 inline-block text-xs tracking-[0.25em] uppercase underline-offset-4 hover:underline"
-        >
-          View process →
-        </a>
+        <div class="max-w-3xl space-y-6 text-sm font-light leading-8 text-black/80 md:text-base">
+          <p>
+            At Mochron Design, we believe every space should be a true reflection
+            of the people who live, work, and experience it. That's why every
+            project we undertake is thoughtfully designed around your lifestyle,
+            needs, and aspirations—not a one-size-fits-all approach.
+          </p>
+          <p>
+            We are a full-service interior design and build studio specializing in
+            both residential and commercial projects. From the initial consultation
+            and concept development to space planning, material selection,
+            construction, and final styling, we provide a seamless one-stop solution
+            that brings your vision to life with confidence and peace of mind.
+          </p>
+          <p>
+            Our collaborative design process combines creativity, functionality, and
+            meticulous attention to detail to create spaces that are timeless,
+            practical, and uniquely yours. Whether you're building your dream home,
+            renovating an existing space, or transforming a commercial environment,
+            we are committed to delivering exceptional craftsmanship and a smooth,
+            transparent project experience from start to finish.
+          </p>
+          <p>
+            At Mochron Design, we don't just design interiors, we create spaces that
+            are uniquely tailored for you and your lifestyle.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
+  {/* Hero slider script — restore with slider markup above
   <script>
     const slides = [...document.querySelectorAll('.hero-slide')];
-    const prev = document.getElementById('hero-prev');
-    const next = document.getElementById('hero-next');
-    const progress = document.getElementById('hero-progress');
-    let currentSlide = 0;
-    let timer: ReturnType<typeof setInterval>;
-
-    function showSlide(index: number) {
-      if (!slides.length) return;
-      currentSlide = (index + slides.length) % slides.length;
-      slides.forEach((slide, i) => {
-        slide.classList.toggle('opacity-100', i === currentSlide);
-        slide.classList.toggle('opacity-0', i !== currentSlide);
-      });
-      if (progress) {
-        progress.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
-      }
-    }
-
-    function startAutoplay() {
-      clearInterval(timer);
-      timer = setInterval(() => showSlide(currentSlide + 1), 5000);
-    }
-
-    prev?.addEventListener('click', () => {
-      showSlide(currentSlide - 1);
-      startAutoplay();
-    });
-
-    next?.addEventListener('click', () => {
-      showSlide(currentSlide + 1);
-      startAutoplay();
-    });
-
-    if (slides.length) {
-      showSlide(0);
-      startAutoplay();
-    }
+    ...
   </script>
+  */}
 </SiteLayout>
