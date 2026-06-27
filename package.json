@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "watermark:projects": "node scripts/watermark-images.mjs",
+    "fix:watermark-asset": "node scripts/fix-watermark-asset.mjs",
     "prebuild": "npm run watermark:projects",
     "build": "astro build",
     "preview": "astro preview",

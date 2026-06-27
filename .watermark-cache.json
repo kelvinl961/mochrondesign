@@ -10,5 +10,25 @@
   "public/images/projects/Scene 3 copy.png": {
     "sourceHash": "b13a80a7903d5e05d9af90a25eb35c34482789b26ea768ce7314253a0502b0bb",
     "watermarkedHash": "9cbc34ad5a3428bd1f9de58a21fd3cb64767b5ac102b1283f11d8a8d07703114"
+  },
+  "public/images/projects/Scene 4 copy.png": {
+    "sourceHash": "cf390f88f8641807e6011c39ca11f0cc3c1690e5c6986d7a4f5af18d332e7db4",
+    "watermarkedHash": "3f7735600b9df3d767a63d2b5b89c3d8863ab97ea8324b136ec38adc3caedbba"
+  },
+  "public/images/projects/Scene 5 copy.png": {
+    "sourceHash": "470f243a45f431f061bc61a6f13d534d428df39c6095b52a2c2653ef82dacbb6",
+    "watermarkedHash": "0dfd7f802e9decc6f8562b9570c4cb1a24bc4fcb823aafebf80bac38a0ecb9b5"
+  },
+  "public/images/projects/Scene 6 copy.png": {
+    "sourceHash": "0ec10c6eed15a5094b698021c5966f814a454f60031f5c7ca666600929cd22cc",
+    "watermarkedHash": "9f6767d125c06f69489e67dff1eddcea5bf8227e23218e58a9ac54300376101b"
+  },
+  "public/images/projects/Scene 7 copy.png": {
+    "sourceHash": "73cde0c0839033622a4407a6f8e6a94a5c0a339197b260258064b19bc51ac179",
+    "watermarkedHash": "5893b4d0a1bb005ac1613b7068bd1069b6e17b330631a44113ee295514f625a7"
+  },
+  "public/images/projects/Scene 8 copy.png": {
+    "sourceHash": "7ced518a4ef4735b4721f5940e0d98c9ec45ca4d75020444d0ee5b0569a7f574",
+    "watermarkedHash": "f6d86257d752c27b2abf8705363c54cccbb555259f7ab3facc8ffa977365ba08"
   }
 }

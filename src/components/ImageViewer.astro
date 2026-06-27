@@ -1,0 +1,165 @@
+---
+interface Props {
+  images: string[];
+  altPrefix: string;
+}
+
+const { images, altPrefix } = Astro.props;
+---
+
+<div
+  class="image-viewer"
+  data-images={JSON.stringify(images)}
+  data-alt-prefix={altPrefix}
+>
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5">
+    {
+      images.map((src, index) => (
+        <button
+          type="button"
+          class="image-viewer-trigger aspect-[4/3] overflow-hidden bg-black/5 text-left"
+          data-index={index}
+          aria-label={`View ${altPrefix} — image ${index + 1} full size`}
+        >
+          <img
+            src={src}
+            alt={`${altPrefix} — image ${index + 1}`}
+            class="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+            loading={index === 0 ? 'eager' : 'lazy'}
+          />
+        </button>
+      ))
+    }
+  </div>
+
+  <div
+    class="image-viewer-modal fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4 md:p-8"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image viewer"
+    hidden
+  >
+    <button
+      type="button"
+      class="image-viewer-close absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center text-white/80 transition hover:text-white md:top-6 md:right-6"
+      aria-label="Close viewer"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-7 w-7">
+        <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="image-viewer-prev absolute top-1/2 left-2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center text-white/70 transition hover:text-white md:left-6"
+      aria-label="Previous image"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-8 w-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="image-viewer-next absolute top-1/2 right-2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center text-white/70 transition hover:text-white md:right-6"
+      aria-label="Next image"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-8 w-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
+      </svg>
+    </button>
+
+    <figure class="flex max-h-full max-w-full flex-col items-center">
+      <img
+        class="image-viewer-photo max-h-[calc(100vh-6rem)] max-w-full object-contain"
+        src=""
+        alt=""
+      />
+      <figcaption class="image-viewer-counter mt-4 text-xs tracking-[0.25em] text-white/60 uppercase">
+      </figcaption>
+    </figure>
+  </div>
+</div>
+
+<script>
+  function initImageViewer(root) {
+    const images = JSON.parse(root.dataset.images ?? '[]');
+    const altPrefix = root.dataset.altPrefix ?? 'Image';
+    const modal = root.querySelector('.image-viewer-modal');
+    const photo = root.querySelector('.image-viewer-photo');
+    const counter = root.querySelector('.image-viewer-counter');
+    const closeBtn = root.querySelector('.image-viewer-close');
+    const prevBtn = root.querySelector('.image-viewer-prev');
+    const nextBtn = root.querySelector('.image-viewer-next');
+    const triggers = [...root.querySelectorAll('.image-viewer-trigger')];
+
+    if (!images.length || !modal) return;
+
+    let currentIndex = 0;
+
+    function showImage(index) {
+      currentIndex = (index + images.length) % images.length;
+      photo.src = images[currentIndex];
+      photo.alt = `${altPrefix} — image ${currentIndex + 1}`;
+      counter.textContent = `${currentIndex + 1} / ${images.length}`;
+      prevBtn.hidden = images.length <= 1;
+      nextBtn.hidden = images.length <= 1;
+    }
+
+    function openViewer(index) {
+      showImage(index);
+      modal.hidden = false;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+
+    function closeViewer() {
+      modal.hidden = true;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+      photo.src = '';
+    }
+
+    function onKeyDown(event) {
+      if (modal.hidden) return;
+      if (event.key === 'Escape') closeViewer();
+      if (event.key === 'ArrowLeft') showImage(currentIndex - 1);
+      if (event.key === 'ArrowRight') showImage(currentIndex + 1);
+    }
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        openViewer(Number(trigger.dataset.index));
+      });
+    });
+
+    closeBtn.addEventListener('click', closeViewer);
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeViewer();
+    });
+
+    prevBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showImage(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showImage(currentIndex + 1);
+    });
+
+    document.addEventListener('keydown', onKeyDown);
+  }
+
+  document.querySelectorAll('.image-viewer').forEach(initImageViewer);
+</script>
+
+<style>
+  .image-viewer-trigger {
+    cursor: zoom-in;
+  }
+</style>

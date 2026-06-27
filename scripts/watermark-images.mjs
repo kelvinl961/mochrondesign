@@ -10,8 +10,8 @@
  * `npm run build` also runs this automatically (prebuild).
  *
  * Auto paths:
- * - Browser: /admin/watermark-upload.js watermarks files before CMS uploads.
- * - GitHub Action: .github/workflows/watermark-images.yml on push to main.
+ * - Build/deploy: `prebuild` runs this before `astro build`.
+ * - Manual: `npm run fix:watermark-asset` rebuilds the PNG from scripts/assets/watermark-source.jpg.
  */
 import { createHash } from 'node:crypto';
 import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
@@ -80,10 +80,26 @@ export async function applyWatermark(imageBuffer, watermarkBuffer, options = {})
   }
 
   const watermarkWidth = Math.max(120, Math.round(meta.width * widthRatio));
-  const watermark = await sharp(watermarkBuffer)
+  const resized = await sharp(watermarkBuffer)
     .resize({ width: watermarkWidth, withoutEnlargement: true })
     .ensureAlpha()
-    .linear(opacity, 0)
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  if (opacity < 1) {
+    for (let i = 3; i < resized.data.length; i += 4) {
+      resized.data[i] = Math.round(resized.data[i] * opacity);
+    }
+  }
+
+  const watermark = await sharp(resized.data, {
+    raw: {
+      width: resized.info.width,
+      height: resized.info.height,
+      channels: 4,
+    },
+  })
+    .png()
     .toBuffer();
 
   const wmMeta = await sharp(watermark).metadata();

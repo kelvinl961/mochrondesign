@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import ImageViewer from '../../components/ImageViewer.astro';
 import { getCollection } from 'astro:content';
 import { formatProjectCaption, getGalleryImages } from '../../utils/projects';
 
@@ -64,19 +65,8 @@ const backTab = project.data.projectTab === 'visualization' ? 'visualization' : 
     </section>
 
     <section class="pb-24">
-      <div class="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-6 sm:grid-cols-2 md:gap-5 md:px-12">
-        {
-          images.map((src, index) => (
-            <div class="aspect-[4/3] overflow-hidden bg-black/5">
-              <img
-                src={src}
-                alt={`${project.data.title} — image ${index + 1}`}
-                class="h-full w-full object-cover"
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
-            </div>
-          ))
-        }
+      <div class="mx-auto max-w-6xl px-6 md:px-12">
+        <ImageViewer images={images} altPrefix={project.data.title} />
       </div>
     </section>
   </main>

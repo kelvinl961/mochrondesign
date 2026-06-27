@@ -184,10 +184,7 @@ const ADMIN_PASSWORD = 'mochron2024';
           script.src = 'https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js';
           script.type = 'module';
           script.onload = () => {
-            const hook = document.createElement('script');
-            hook.src = '/admin/watermark-upload.js';
-            hook.defer = true;
-            document.body.appendChild(hook);
+            // Watermarks are applied once at build/deploy (npm run watermark:projects).
           };
           document.body.appendChild(script);
         }
