@@ -16,7 +16,7 @@ const { projects, tabId } = Astro.props;
   data-tab-panel={tabId}
   role="tabpanel"
 >
-  <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4 lg:gap-x-5 lg:gap-y-12">
+  <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 lg:gap-y-12">
     {
       projects.map((project) => {
         const caption = formatProjectCaption(project);

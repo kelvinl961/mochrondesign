@@ -1,5 +1,10 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import { contact } from '../data/site';
+
+export const prerender = true;
+
+const primaryBranch = contact.branches[0];
 ---
 
 <SiteLayout
@@ -58,33 +63,65 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       </div>
     </section>
 
-    <section class="marble-bg px-6 py-24 md:px-12 md:py-32">
+    <section id="contact" class="marble-bg px-6 py-24 md:px-12 md:py-32">
       <div class="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2">
         <div>
           <p class="mb-3 text-xs tracking-[0.35em] text-pins-muted uppercase">Our</p>
           <h2 class="mb-8 text-4xl tracking-pins uppercase">Location</h2>
-          <button
-            type="button"
-            class="bg-pins-grey px-6 py-3 text-[10px] tracking-[0.25em] text-white uppercase"
+          <div class="space-y-4 text-sm font-light leading-7 text-black/80">
+            {
+              contact.branches.map((branch) => (
+                <p>
+                  <span class="block text-xs tracking-[0.2em] text-pins-muted uppercase">
+                    {branch.label}
+                  </span>
+                  {branch.address}
+                </p>
+              ))
+            }
+            <p>
+              <span class="block text-xs tracking-[0.2em] text-pins-muted uppercase">Call us</span>
+              {contact.phones.join(' / ')}
+            </p>
+            <p>
+              <span class="block text-xs tracking-[0.2em] text-pins-muted uppercase">Email</span>
+              <a href={`mailto:${contact.email}`} class="transition hover:opacity-60">
+                {contact.email}
+              </a>
+            </p>
+            <p>
+              <span class="block text-xs tracking-[0.2em] text-pins-muted uppercase">
+                Office hours
+              </span>
+              {contact.hours}
+            </p>
+          </div>
+          <a
+            href="#contact-form"
+            class="mt-8 inline-block bg-pins-grey px-6 py-3 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-black"
           >
             contact us
-          </button>
+          </a>
         </div>
 
         <div class="bg-white/70 p-8 md:p-10">
           <h3 class="mb-8 text-center text-sm tracking-[0.25em] uppercase">message us</h3>
-          <form class="space-y-4" action="mailto:hello@mochron.design" method="post">
+          <form id="contact-form" class="space-y-4" novalidate>
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <input
                 type="text"
                 name="firstName"
                 placeholder="First Name"
+                required
                 class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
               />
               <input
                 type="text"
                 name="lastName"
                 placeholder="Last Name"
+                required
                 class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
               />
             </div>
@@ -163,21 +200,69 @@ import SiteLayout from '../layouts/SiteLayout.astro';
               class="w-full border border-black/10 bg-transparent px-4 py-3 text-sm outline-none focus:border-black/30"
             ></textarea>
 
+            <p id="contact-form-status" class="hidden text-sm" role="status" aria-live="polite"></p>
+
             <button
+              id="contact-form-submit"
               type="submit"
-              class="w-full bg-black px-6 py-4 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-pins-grey"
+              class="w-full bg-black px-6 py-4 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-pins-grey disabled:cursor-not-allowed disabled:opacity-60"
             >
               Submit
             </button>
           </form>
 
           <p class="mt-10 text-center text-sm font-light leading-7 text-black/70">
-            call us ：03-7887 2752 / 014-3644 551<br />
-            visit us ：D 3-3, Pusat Komersial Parklane, Jalan SS 7/26, 47301 Petaling
-            Jaya, Selangor
+            call us：{contact.phones.join(' / ')}<br />
+            visit us：{primaryBranch?.address}
           </p>
         </div>
       </div>
     </section>
   </main>
 </SiteLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('contact-form-status') as HTMLParagraphElement | null;
+  const submitButton = document.getElementById('contact-form-submit') as HTMLButtonElement | null;
+
+  function showStatus(message: string, isError: boolean) {
+    if (!status) return;
+
+    status.textContent = message;
+    status.classList.remove('hidden', 'text-green-700', 'text-red-700');
+    status.classList.add(isError ? 'text-red-700' : 'text-green-700');
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!form || !submitButton) return;
+
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+    status?.classList.add('hidden');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: new FormData(form),
+      });
+
+      const result = (await response.json()) as { error?: string; success?: boolean };
+
+      if (!response.ok || !result.success) {
+        showStatus(result.error ?? 'Unable to send your message. Please try again.', true);
+        return;
+      }
+
+      form.reset();
+      showStatus('Thank you. Your message has been sent.', false);
+    } catch {
+      showStatus('Unable to send your message. Please try again.', true);
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit';
+    }
+  });
+</script>

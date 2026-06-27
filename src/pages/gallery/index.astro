@@ -3,6 +3,8 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 import GalleryTabs from '../../components/GalleryTabs.astro';
 import { getCollection } from 'astro:content';
 
+export const prerender = true;
+
 const projects = await getCollection('projects');
 const sortByTitle = (a: (typeof projects)[number], b: (typeof projects)[number]) =>
   a.data.title.localeCompare(b.data.title);

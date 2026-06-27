@@ -22,7 +22,7 @@ function isActive(href: string) {
 <button
   id="menu-toggle"
   type="button"
-  class="fixed top-8 right-8 z-[70] flex h-12 w-12 items-center justify-center rounded-full bg-white/95 shadow-sm transition hover:bg-white"
+  class="fixed top-4 right-4 z-[70] flex h-11 w-11 items-center justify-center rounded-full bg-white/95 shadow-sm transition hover:bg-white md:top-8 md:right-8 md:h-12 md:w-12"
   aria-expanded="false"
   aria-controls="menu-drawer"
   aria-label="Open menu"
@@ -45,7 +45,7 @@ function isActive(href: string) {
 
 <aside
   id="menu-drawer"
-  class="fixed top-0 right-0 z-[80] flex h-full w-full max-w-[420px] translate-x-full flex-col bg-[#8e8e8e] text-white transition-transform duration-300 ease-out"
+  class="fixed inset-y-0 right-0 z-[80] flex h-full w-full max-w-[420px] translate-x-full flex-col bg-[#8e8e8e] text-white shadow-[-1px_0_0_0_#8e8e8e] transition-transform duration-300 ease-out [backface-visibility:hidden]"
   aria-hidden="true"
 >
   <div class="flex justify-end px-8 pt-8">
@@ -77,14 +77,15 @@ function isActive(href: string) {
 
   <div class="mx-10 my-10 border-t border-white/35"></div>
 
-  <div class="flex flex-1 flex-col items-center px-8 text-center text-sm font-light leading-7">
-    <p class="mb-6">
-      Contact us<br />
-      {contact.hours}
-    </p>
+  <div class="flex flex-col items-center px-12 pl-16 text-sm font-light leading-7">
+    <div class="text-left">
+      <p class="mb-6">
+        Contact us<br />
+        {contact.hours}
+      </p>
 
-    <div class="mb-5 flex items-start gap-3 text-left">
-      <svg class="mt-1 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <div class="mb-5 flex items-start gap-3">
+      <svg class="mt-0.5 h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
           d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2a1 1 0 011-.24 11 11 0 003.45.55 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 014 5a1 1 0 011-1h3.5a1 1 0 011 1 11 11 0 00.55 3.45 1 1 0 01-.25 1z"
           stroke="currentColor"
@@ -95,8 +96,8 @@ function isActive(href: string) {
       </div>
     </div>
 
-    <div class="mb-5 flex items-start gap-3 text-left">
-      <svg class="mt-1 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <div class="mb-5 flex items-start gap-3">
+      <svg class="mt-0.5 h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
           d="M4 6h16v12H4z"
           stroke="currentColor"
@@ -111,8 +112,8 @@ function isActive(href: string) {
 
     {
       contact.branches.map((branch) => (
-        <div class="mb-5 flex items-start gap-3 text-left">
-          <svg class="mt-1 h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <div class="mb-5 flex items-start gap-3">
+          <svg class="mt-0.5 h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
               d="M12 21s6-5.2 6-10a6 6 0 10-12 0c0 4.8 6 10 6 10z"
               stroke="currentColor"
@@ -123,31 +124,25 @@ function isActive(href: string) {
         </div>
       ))
     }
+    </div>
   </div>
 
-  <div class="mx-10 mb-8 border-t border-white/35"></div>
+  <div class="mt-auto flex w-full justify-center px-8 pb-10 pt-8">
+    <img
+      src="/images/brand/menu-logo.png"
+      alt="Mochron Design"
+      class="h-24 w-24 object-contain"
+      width="96"
+      height="96"
+      loading="lazy"
+    />
+  </div>
 
-  <div class="flex items-center justify-center gap-8 px-8 pb-10">
+  <div class="mx-10 border-t border-white/35"></div>
+
+  <div class="flex items-center justify-center px-8 py-8">
     <a
-      href="https://www.xiaohongshu.com"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-xs font-medium tracking-widest transition hover:opacity-70"
-      aria-label="Xiaohongshu"
-    >
-      小红书
-    </a>
-    <a
-      href="https://www.facebook.com"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="text-lg transition hover:opacity-70"
-      aria-label="Facebook"
-    >
-      f
-    </a>
-    <a
-      href="https://www.instagram.com"
+      href="https://www.instagram.com/mochrondesign/"
       target="_blank"
       rel="noopener noreferrer"
       class="transition hover:opacity-70"
@@ -172,8 +167,6 @@ function isActive(href: string) {
   const iconBars = menuIcon?.querySelectorAll('span');
 
   function setMenuOpen(isOpen: boolean) {
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-
     toggle?.setAttribute('aria-expanded', String(isOpen));
     drawer?.setAttribute('aria-hidden', String(!isOpen));
     overlay?.setAttribute('aria-hidden', String(!isOpen));
@@ -191,12 +184,7 @@ function isActive(href: string) {
     iconBars?.[1]?.classList.toggle('-translate-y-[4px]', isOpen);
     iconBars?.[1]?.classList.toggle('-rotate-45', isOpen);
 
-    document.documentElement.classList.toggle('overflow-hidden', isOpen);
     document.body.classList.toggle('overflow-hidden', isOpen);
-    document.body.style.paddingRight = isOpen && scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
-    if (toggle instanceof HTMLElement) {
-      toggle.style.marginRight = isOpen && scrollbarWidth > 0 ? `${scrollbarWidth}px` : '';
-    }
   }
 
   toggle?.addEventListener('click', () => {

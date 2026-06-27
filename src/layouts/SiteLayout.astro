@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import WhatsAppFloatingWidget from '../components/WhatsAppFloatingWidget.astro';
 
 interface Props {
   title: string;
@@ -32,5 +33,6 @@ const { title, description = 'Mochron Design — interior design and architectur
     <SiteNav currentPath={Astro.url.pathname} />
     <slot />
     <SiteFooter />
+    <WhatsAppFloatingWidget />
   </body>
 </html>

@@ -2,6 +2,8 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import GalleryCategoryNav from '../../components/GalleryCategoryNav.astro';
 
+export const prerender = true;
+
 const pages: Record<string, { title: string; category: string }> = {
   condominium: { title: 'CONDOMINIUM PROJECT', category: 'condominium' },
   architecture: { title: 'ARCHITECTURE PROJECT', category: 'architecture' },
