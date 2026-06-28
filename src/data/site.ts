@@ -1,3 +1,13 @@
+export const site = {
+  name: 'Mochron Design',
+  url: 'https://mochrondesign.com',
+  defaultDescription:
+    'Mochron Design — interior design and build studio in Puchong, Selangor. Residential and commercial projects, 3D visualizations, and turnkey design solutions.',
+  ogImage: '/images/home-hero-banner.png',
+  locale: 'en_MY',
+  twitter: '@mochrondesign',
+};
+
 export const contact = {
   hours: 'Monday to friday 10am - 7pm',
   phones: ['019-2766319'],

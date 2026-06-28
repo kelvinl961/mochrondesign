@@ -3,14 +3,53 @@ import '../styles/global.css';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import WhatsAppFloatingWidget from '../components/WhatsAppFloatingWidget.astro';
+import { contact, site } from '../data/site';
 
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
 }
 
-const { title, description = 'Mochron Design — interior design and architecture portfolio' } =
-  Astro.props;
+const {
+  title,
+  description = site.defaultDescription,
+  ogImage = site.ogImage,
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, site.url).href;
+const absoluteOgImage = new URL(ogImage, site.url).href;
+const primaryBranch = contact.branches[0];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'InteriorDesigner',
+  name: site.name,
+  url: site.url,
+  image: absoluteOgImage,
+  description,
+  email: contact.email,
+  telephone: contact.phones[0],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: primaryBranch.address,
+    addressLocality: 'Puchong',
+    addressRegion: 'Selangor',
+    postalCode: '47100',
+    addressCountry: 'MY',
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '10:00',
+    closes: '19:00',
+  },
+  sameAs: ['https://www.instagram.com/mochrondesign/'],
+};
 ---
 
 <!doctype html>
@@ -19,9 +58,29 @@ const { title, description = 'Mochron Design — interior design and architectur
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:locale" content={site.locale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

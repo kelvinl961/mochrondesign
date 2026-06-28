@@ -18,9 +18,17 @@ const { project } = Astro.props;
 const caption = formatProjectCaption(project);
 const images = getGalleryImages(project);
 const backTab = project.data.projectTab === 'visualization' ? 'visualization' : 'completed';
+const projectDescription =
+  project.data.description?.trim() ||
+  `${project.data.title} — ${caption.subtitle} interior design project by Mochron Design, Puchong.`;
 ---
 
-<SiteLayout title={`${project.data.title} | Mochron Design`}>
+<SiteLayout
+  title={`${project.data.title} | Mochron Design`}
+  description={projectDescription}
+  ogImage={project.data.image}
+  ogType="article"
+>
   <main class="marble-bg min-h-screen">
     <section class="px-6 py-16 md:px-12 md:py-24">
       <div class="mx-auto max-w-6xl">
