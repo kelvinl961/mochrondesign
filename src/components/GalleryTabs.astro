@@ -23,7 +23,7 @@ const { completed, visualization } = Astro.props;
   <div class="flex flex-wrap justify-center gap-3">
     <button
       type="button"
-      class="gallery-tab active bg-[#d9d9d9] px-5 py-2 text-[10px] tracking-[0.25em] text-black uppercase transition"
+      class="gallery-tab is-active"
       data-tab="completed"
       role="tab"
       aria-selected="true"
@@ -33,7 +33,7 @@ const { completed, visualization } = Astro.props;
     </button>
     <button
       type="button"
-      class="gallery-tab bg-pins-grey px-5 py-2 text-[10px] tracking-[0.25em] text-white uppercase transition hover:bg-black"
+      class="gallery-tab"
       data-tab="visualization"
       role="tab"
       aria-selected="false"
@@ -47,6 +47,24 @@ const { completed, visualization } = Astro.props;
 <GalleryGrid projects={completed} tabId="completed" />
 <GalleryGrid projects={visualization} tabId="visualization" />
 
+<style>
+  .gallery-tab {
+    @apply bg-pins-grey px-5 py-2 text-[10px] tracking-[0.25em] text-white uppercase transition;
+  }
+
+  .gallery-tab:not(.is-active):hover {
+    @apply bg-black text-white;
+  }
+
+  .gallery-tab.is-active {
+    @apply bg-[#d9d9d9] text-black;
+  }
+
+  .gallery-tab.is-active:hover {
+    @apply bg-[#d9d9d9] text-black;
+  }
+</style>
+
 <script>
   const tabs = [...document.querySelectorAll('.gallery-tab')];
   const panels = [...document.querySelectorAll('.gallery-panel')];
@@ -55,10 +73,7 @@ const { completed, visualization } = Astro.props;
     tabs.forEach((tab) => {
       const isActive = tab.getAttribute('data-tab') === tabName;
       tab.setAttribute('aria-selected', String(isActive));
-      tab.classList.toggle('bg-[#d9d9d9]', isActive);
-      tab.classList.toggle('text-black', isActive);
-      tab.classList.toggle('bg-pins-grey', !isActive);
-      tab.classList.toggle('text-white', !isActive);
+      tab.classList.toggle('is-active', isActive);
     });
 
     panels.forEach((panel) => {
