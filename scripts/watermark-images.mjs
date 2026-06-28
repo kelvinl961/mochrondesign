@@ -7,11 +7,11 @@
  *   npm run watermark:projects -- --force   # re-apply even if cached
  *
  * Run after uploading images via the CMS, then commit the updated files.
- * `npm run build` also runs this automatically (prebuild).
+ * `npm run build` can run this automatically via the `prebuild` script (currently disabled).
  *
  * Auto paths:
- * - Build/deploy: `prebuild` runs this before `astro build`.
- * - Manual: `npm run fix:watermark-asset` rebuilds the PNG from scripts/assets/watermark-source.jpg.
+ * - Build/deploy: `prebuild` hook (disabled — rename `_prebuild` → `prebuild` in package.json to re-enable).
+ * - Manual: `npm run watermark:projects` or `npm run fix:watermark-asset`.
  */
 import { createHash } from 'node:crypto';
 import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
