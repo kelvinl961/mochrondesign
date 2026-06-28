@@ -14,7 +14,7 @@ export function getGalleryImages(project: ProjectEntry): string[] {
 
 export function formatProjectCaption(project: ProjectEntry) {
   const type = project.data.propertyType?.toLowerCase().trim();
-  const location = project.data.location.toLowerCase().trim();
+  const location = project.data.location.toUpperCase().trim();
   const subtitle = [type, location].filter(Boolean).join(', ');
   return {
     title: `- ${project.data.title} -`,
