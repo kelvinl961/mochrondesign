@@ -10,7 +10,7 @@ export const site = {
 
 export const contact = {
   hours: 'Monday to friday 10am - 7pm',
-  phones: ['019-2766319'],
+  phones: ['019-2766319', '016-2631314'],
   whatsapp: '60192766319',
   email: 'itsmochron@gmail.com',
   branches: [
