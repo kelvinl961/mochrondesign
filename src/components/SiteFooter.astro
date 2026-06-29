@@ -23,7 +23,9 @@ const mapSrc = primaryBranch?.mapQuery
           ))
         }
         <p class="font-light tracking-wide">
-          {contact.phones.join('  ')}
+          {contact.phones.map((phone) => (
+            <span class="block">{phone}</span>
+          ))}
         </p>
         <p class="text-xs tracking-[0.35em] text-pins-muted uppercase">Office Hour</p>
         <p class="font-light">{contact.hours}</p>
