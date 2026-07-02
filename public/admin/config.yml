@@ -6,8 +6,18 @@ backend:
   branch: main
   base_url: https://mochrondesign-cms-auth.itsmochron.workers.dev
 
+# Legacy local images (existing projects). New uploads use R2 below.
 media_folder: public/images/projects
 public_folder: /images/projects
+
+# Full-resolution uploads via Cloudflare R2 (run ./scripts/setup-r2-media.sh once).
+media_libraries:
+  cloudflare_r2:
+    access_key_id: 1b83910ae94e2a4c11627c3ccf655891
+    bucket: mochrondesign-media
+    account_id: f8d8a734cfaeac3dec176d8510a16f78
+    public_url: https://media.mochrondesign.com
+    prefix: projects/
 
 collections:
   - name: projects
