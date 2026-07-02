@@ -1,7 +1,7 @@
 {
-  "title": "TRILLIA",
-  "location": "JELUTONG",
-  "propertyType": "",
+  "title": "Trillia",
+  "location": "Jelutong",
+  "propertyType": "Terrace",
   "projectTab": "visualization",
   "image": "/images/projects/1.jpg",
   "gallery": [
@@ -50,7 +50,7 @@
     "/images/projects/8.jpg",
     "/images/projects/9.jpg"
   ],
-  "designConcept": "dd",
-  "designer": "ff",
-  "description": "ggg"
+  "designConcept": "",
+  "designer": "",
+  "description": "Modern Contemporary | 现代风"
 }
